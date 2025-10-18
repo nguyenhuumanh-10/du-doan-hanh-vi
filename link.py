@@ -144,17 +144,20 @@ try:
             return img
 
     # ============================
-    # 4. Khởi chạy webcam
-    # ============================
-    st.info("💡 Hướng dẫn: Cho phép trình duyệt truy cập camera và nhìn thẳng vào webcam.")
-    webrtc_streamer(
-        key="webcam",
-        video_processor_factory=VideoProcessor,
-        media_stream_constraints={"video": True, "audio": False},
-        rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
-    )
+# 4. Khởi chạy webcam (ĐÃ SỬA LỖI STUN)
+# ============================
+st.info("💡Cho phép trình duyệt truy cập camera và nhìn thẳng vào webcam.")
 
-except Exception as e:
-    st.error("LỖI NGHIÊM TRỌNG ĐÃ XẢY RA")
-    st.error("Vui lòng kiểm tra lại các file mô hình và đảm bảo các thư viện đã được cài đặt đầy đủ.")
-    st.exception(e)
+# Thêm nhiều máy chủ STUN để tăng khả năng kết nối
+webrtc_streamer(
+    key="webcam",
+    video_processor_factory=VideoProcessor,
+    media_stream_constraints={"video": True, "audio": False},
+    rtc_configuration={
+        "iceServers": [
+            {"urls": ["stun:stun.l.google.com:19302"]},
+            {"urls": ["stun:stun1.l.google.com:19302"]},
+            {"urls": ["stun:stun2.l.google.com:19302"]},
+        ]
+    }
+)
