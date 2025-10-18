@@ -144,31 +144,47 @@ try:
             return img
 
    # ============================
-    # 4. Khởi chạy webcam (SỬ DỤNG TURN SERVER ĐỂ VƯỢT TƯỜNG LỬA)
+    # 4. KHẮC PHỤC BẰNG CÁCH TẢI VIDEO LÊN (ĐÁNG TIN CẬY 100%)
     # ============================
-    st.info("💡Cho phép trình duyệt truy cập camera và nhìn thẳng vào webcam.")
+    st.info("💡 Thay vì dùng webcam, hãy tải lên một tệp video (mp4) để phân tích.")
+    
+    uploaded_file = st.file_uploader("Tải video của bạn lên tại đây", type=["mp4", "mov", "avi"])
 
-    # Cấu hình này bao gồm cả STUN và một máy chủ TURN công cộng (openrelay)
-    # để cố gắng vượt qua các tường lửa nghiêm ngặt.
-    webrtc_streamer(
-        key="webcam",
-        video_processor_factory=VideoProcessor,
-        media_stream_constraints={"video": True, "audio": False},
-        rtc_configuration={
-            "iceServers": [
-                {"urls": ["stun:stun.l.google.com:19302"]},
-                {"urls": ["stun:stun1.l.google.com:19302"]},
-                {
-                    "urls": [
-                        "turn:openrelay.metered.ca:80",
-                        "turn:openrelay.metered.ca:443",
-                    ],
-                    "username": "openrelayproject",
-                    "credential": "openrelayproject",
-                },
-            ]
-        }
-    )
+    if uploaded_file is not None:
+        # Lưu tệp tạm thời
+        with open("temp_video.mp4", "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        
+        st.video("temp_video.mp4")
+        st.success("Đã tải video lên! Bắt đầu xử lý...")
+
+        # Khởi tạo lại các biến xử lý
+        video_processor = VideoProcessor()
+        cap = cv2.VideoCapture("temp_video.mp4")
+        
+        # Tạo một chỗ để hiển thị video kết quả
+        st_frame = st.empty()
+        
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
+                
+            # Lật frame (giống như webcam) và xử lý
+            frame = cv2.flip(frame, 1)
+            
+            # Giả lập cấu trúc frame của webrtc để đưa vào hàm transform
+            class FakeFrame:
+                def to_ndarray(self, format):
+                    return frame
+            
+            img_out = video_processor.transform(FakeFrame())
+            
+            # Hiển thị frame đã xử lý
+            st_frame.image(img_out, channels="BGR")
+
+        cap.release()
+        st.success("Đã xử lý xong!")
 
 # ============================
 # 5. KHỐI BẮT LỖI
