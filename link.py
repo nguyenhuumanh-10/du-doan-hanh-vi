@@ -7,7 +7,7 @@ from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 from collections import deque, Counter
 
 # ============================
-# CẤU HÌNH & HÀM TIỆN ÍCH (Lấy từ file local của bạn)
+# CẤU HÌNH & HÀM TIỆN ÍCH
 # ============================
 WINDOW_SIZE = 30
 SMOOTH_WINDOW = 5
@@ -144,20 +144,28 @@ try:
             return img
 
     # ============================
-# 4. Khởi chạy webcam (ĐÃ SỬA LỖI STUN)
-# ============================
-st.info("💡Cho phép trình duyệt truy cập camera và nhìn thẳng vào webcam.")
+    # 4. Khởi chạy webcam (ĐÃ SỬA LỖI STUN)
+    # ============================
+    st.info("💡Cho phép trình duyệt truy cập camera và nhìn thẳng vào webcam.")
 
-# Thêm nhiều máy chủ STUN để tăng khả năng kết nối
-webrtc_streamer(
-    key="webcam",
-    video_processor_factory=VideoProcessor,
-    media_stream_constraints={"video": True, "audio": False},
-    rtc_configuration={
-        "iceServers": [
-            {"urls": ["stun:stun.l.google.com:19302"]},
-            {"urls": ["stun:stun1.l.google.com:19302"]},
-            {"urls": ["stun:stun2.l.google.com:19302"]},
-        ]
-    }
-)
+    # Thêm nhiều máy chủ STUN để tăng khả năng kết nối
+    webrtc_streamer(
+        key="webcam",
+        video_processor_factory=VideoProcessor,
+        media_stream_constraints={"video": True, "audio": False},
+        rtc_configuration={
+            "iceServers": [
+                {"urls": ["stun:stun.l.google.com:19302"]},
+                {"urls": ["stun:stun1.l.google.com:19302"]},
+                {"urls": ["stun:stun2.l.google.com:19302"]},
+            ]
+        }
+    )
+
+# ============================
+# 5. KHỐI BẮT LỖI (ĐÃ THÊM LẠI)
+# ============================
+except Exception as e:
+    st.error("LỖI NGHIÊM TRỌNG ĐÃ XẢY RA")
+    st.error("Vui lòng kiểm tra lại các file mô hình và đảm bảo các thư viện đã được cài đặt đầy đủ.")
+    st.exception(e)
