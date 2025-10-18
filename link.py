@@ -143,12 +143,12 @@ try:
             
             return img
 
-    # ============================
-    # 4. Khởi chạy webcam (ĐÃ SỬA LỖI STUN)
+   # ============================
+    # 4. Khởi chạy webcam 
     # ============================
     st.info("💡Cho phép trình duyệt truy cập camera và nhìn thẳng vào webcam.")
 
-    # Thêm nhiều máy chủ STUN để tăng khả năng kết nối
+    # Cung cấp một danh sách lớn các máy chủ STUN để tăng khả năng kết nối
     webrtc_streamer(
         key="webcam",
         video_processor_factory=VideoProcessor,
@@ -158,12 +158,16 @@ try:
                 {"urls": ["stun:stun.l.google.com:19302"]},
                 {"urls": ["stun:stun1.l.google.com:19302"]},
                 {"urls": ["stun:stun2.l.google.com:19302"]},
+                {"urls": ["stun:stun3.l.google.com:19302"]},
+                {"urls": ["stun:stun4.l.google.com:19302"]},
+                {"urls": ["stun:stun.twilio.com:3478"]},
+                {"urls": ["stun:stun.nextcloud.com:443"]},
             ]
         }
     )
 
 # ============================
-# 5. KHỐI BẮT LỖI (ĐÃ THÊM LẠI)
+# 5. KHỐI BẮT LỖI
 # ============================
 except Exception as e:
     st.error("LỖI NGHIÊM TRỌNG ĐÃ XẢY RA")
