@@ -144,11 +144,12 @@ try:
             return img
 
    # ============================
-    # 4. Khởi chạy webcam 
+    # 4. Khởi chạy webcam (SỬ DỤNG TURN SERVER ĐỂ VƯỢT TƯỜNG LỬA)
     # ============================
     st.info("💡Cho phép trình duyệt truy cập camera và nhìn thẳng vào webcam.")
 
-    # Cung cấp một danh sách lớn các máy chủ STUN để tăng khả năng kết nối
+    # Cấu hình này bao gồm cả STUN và một máy chủ TURN công cộng (openrelay)
+    # để cố gắng vượt qua các tường lửa nghiêm ngặt.
     webrtc_streamer(
         key="webcam",
         video_processor_factory=VideoProcessor,
@@ -157,11 +158,14 @@ try:
             "iceServers": [
                 {"urls": ["stun:stun.l.google.com:19302"]},
                 {"urls": ["stun:stun1.l.google.com:19302"]},
-                {"urls": ["stun:stun2.l.google.com:19302"]},
-                {"urls": ["stun:stun3.l.google.com:19302"]},
-                {"urls": ["stun:stun4.l.google.com:19302"]},
-                {"urls": ["stun:stun.twilio.com:3478"]},
-                {"urls": ["stun:stun.nextcloud.com:443"]},
+                {
+                    "urls": [
+                        "turn:openrelay.metered.ca:80",
+                        "turn:openrelay.metered.ca:443",
+                    ],
+                    "username": "openrelayproject",
+                    "credential": "openrelayproject",
+                },
             ]
         }
     )
