@@ -324,15 +324,17 @@ rtc_config = {
         {"urls": ["stun:stun.l.google.com:19302"]},
         {
             "urls": [
-                "turn:openrelay.metered.ca:80",
-                "turn:openrelay.metered.ca:443",
-                "turn:openrelay.metered.ca:443?transport=tcp"
+                "turn:global.relay.metered.ca:80",
+                "turn:global.relay.metered.ca:80?transport=tcp",
+                "turns:global.relay.metered.ca:443",
+                "turns:global.relay.metered.ca:443?transport=tcp"
             ],
             "username": "de41ceb044e4f8cecce8cc6f",
             "credential": "pIhypRQRN3O5/5LR"
         }
     ]
 }
+
 
 webrtc_streamer(
     key="combined",
@@ -343,4 +345,5 @@ webrtc_streamer(
     rtc_configuration=rtc_config,
     async_processing=True,
 )
+
 
