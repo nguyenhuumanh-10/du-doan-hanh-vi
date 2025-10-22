@@ -321,16 +321,16 @@ st.info("Cho phép trình duyệt truy cập camera. Nhấn 'Start' trong widget
 
 rtc_config = {
     "iceServers": [
-        {"urls": ["stun:stun.l.google.com:19302"]},
+        {"urls": ["stun:stun.relay.metered.ca:80"]},
         {
             "urls": [
                 "turn:global.relay.metered.ca:80",
                 "turn:global.relay.metered.ca:80?transport=tcp",
-                "turns:global.relay.metered.ca:443",
+                "turn:global.relay.metered.ca:443",
                 "turns:global.relay.metered.ca:443?transport=tcp"
             ],
-            "username": "de41ceb044e4f8cecce8cc6f",
-            "credential": "pIhypRQRN3O5/5LR"
+            "username": "15ec1254f5093135e19918f1",
+            "credential": "RMbQGYlVfcipT6r9"
         }
     ]
 }
@@ -345,5 +345,6 @@ webrtc_streamer(
     rtc_configuration=rtc_config,
     async_processing=True,
 )
+
 
 
