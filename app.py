@@ -319,22 +319,28 @@ class CombinedProcessor(VideoTransformerBase):
 # ---------------------------
 st.info("Cho phép trình duyệt truy cập camera. Nhấn 'Start' trong widget dưới để chạy webcam.")
 
-webrtc_streamer(
-    key="combined",
-    video_transformer_factory=lambda: CombinedProcessor(run_face, run_hand, face_loaded, hand_loaded, fps_display),
-    media_stream_constraints={"video": True, "audio": False},
-    rtc_configuration={
+rtc_config = {
     "iceServers": [
         {"urls": ["stun:stun.l.google.com:19302"]},
         {
-            "urls": ["turn:openrelay.metered.ca:80", "turn:openrelay.metered.ca:443", "turn:openrelay.metered.ca:443?transport=tcp"],
+            "urls": [
+                "turn:openrelay.metered.ca:80",
+                "turn:openrelay.metered.ca:443",
+                "turn:openrelay.metered.ca:443?transport=tcp"
+            ],
             "username": "openrelayproject",
             "credential": "openrelayproject"
-        },
+        }
     ]
-},
+}
 
+webrtc_streamer(
+    key="combined",
+    video_transformer_factory=lambda: CombinedProcessor(
+        run_face, run_hand, face_loaded, hand_loaded, fps_display
+    ),
+    media_stream_constraints={"video": True, "audio": False},
+    rtc_configuration=rtc_config,
     async_processing=True,
 )
-
 
