@@ -328,8 +328,8 @@ rtc_config = {
                 "turn:openrelay.metered.ca:443",
                 "turn:openrelay.metered.ca:443?transport=tcp"
             ],
-            "username": "openrelayproject",
-            "credential": "openrelayproject"
+            "username": "de41ceb044e4f8cecce8cc6f",
+            "credential": "pIhypRQRN3O5/5LR"
         }
     ]
 }
